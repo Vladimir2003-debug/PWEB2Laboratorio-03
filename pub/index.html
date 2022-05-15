@@ -5,22 +5,44 @@
     <meta charset="UTF-8">
     <title>Ejercicio 2</title>
     <script>
-        function recitar() {
-            const url = 'http://localhost:3000/recitar'
-            fetch(url).then(
+        function recitar(markupText) {
+            const url = 'http://localhost:3000/'
+            const data = {
+                text: markupText
+            }
+            console.log(data)
+            const request = {
+                method: 'POST', // Podría ser GET
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            }
+            http = fetch(url, request)
+            http.then(
                 response => response.json()
             ).then(
                 data => {
-                    document.querySelector("#poema").innerHTML = data.text
+                    document.querySelector("#htmlCode").innerHTML = data.text
                 }
             )
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            const text = document.querySelector('#markupText')
+            document.querySelector('#markupForm').onsubmit = () => {
+                recitar(text.value)
+                return false;
+            }
+        })
     </script>
 </head>
 
 <body>
-    <div id = "poema"></div>
-    <button type="button" onclick="recitar()">Recitar</button>
+    <form id="markupForm">
+        <textarea id="markupText" name="markupText" rows="10" cols="80"></textarea>
+        <br>
+        <input type="submit" value="Recitar">
+    </form>
+    <div id="htmlCode"></div>
 </body>
-
 </html>
